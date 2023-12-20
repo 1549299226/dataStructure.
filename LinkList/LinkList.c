@@ -185,7 +185,6 @@ int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
 //获取链表长度
 int LinkListGetLength(LinkList *pList, int *pSize)
 {
-    int ret = 0;
     if (pList == NULL)
     {
         return NULL_PTR;
@@ -196,14 +195,31 @@ int LinkListGetLength(LinkList *pList, int *pSize)
         *pSize = pList->len;
     }
 
-    return ret;
+    // 返回链表的长度
+    return pList->len;
     
 }
 
 //链表的销毁
 int LinkListDestroy(LinkList *pList)
 {
+    int ret 
+    //使用头删
+    int size = 0;
+    while (LinkListGetLength(pList,&size))
+    {
+        LinkListDelHead(pList;)
+    }
 
+    if (pList->head != NULL)
+    {
+        free(pList->head);
+        pList->head = NULL;
+        pList->tail = NULL;
+
+    }
+    
+    return ret;
 }
 
 //链表遍历接口
