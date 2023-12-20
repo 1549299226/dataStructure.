@@ -44,19 +44,62 @@ int LinkListInit(LinkList** pList)
 //链表头插法
 int LinkListHeadInsert(LinkList *pList, ELEMENTTYPE val)
 {
-
+    return LinkListAppointPosInsert(pList, 0, val);
 }
 
 //尾插法
 int LinkListTailInsert(LinkList *pList, ELEMENTTYPE val)
 {
+    return LinkListAppointPosInsert(pList, pList->len, val);
 
 }
 
 //任意位置插入
 int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTYPE val)
 {
+    int ret = 0;
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+    
+    if (pos < 0 || pos > pList->len)
+    {
+        return INVALID_ACCESS;
+    }
+    
+    //封装结点
+    LinkNode * NewNode = (LinkList *)malloc(sizeof(LinkList * 1));
+    if (NewNode == NULL)
+    {
+        return MALLOC_ERROR;
+    }
+    memset(NewNode, 0, sizeof(LinkList) * 1);
+#if 0
+    NewNode->data = 0;
+    NewNode->next = NULL;
+#endif
 
+    //赋值
+    NewNode->data = val;
+#if 1
+    LinkNode * travelNode = pList->head;
+#else    
+    LinkNode * travelNode = pList->head->next;
+#endif   
+    while (pos)
+    {
+        travelNode = travelNode->next;
+        pos--;
+    }
+
+    //改变结点方向
+    NewNode->next = travelNode->next;
+    travelNode->next = NewNode;
+    
+    //更新链表长度
+    (pList->len)++;
+    return ret;
 }
 
 //头删
@@ -86,7 +129,19 @@ int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
 //获取链表长度
 int LinkListGetLength(LinkList *pList, int *pSize)
 {
+    int ret = 0;
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
 
+    if (pSize)
+    {
+        *pSize = pList->len;
+    }
+
+    return ret;
+    
 }
 
 //链表的销毁
@@ -98,5 +153,5 @@ int LinkListDestroy(LinkList *pList)
 //链表遍历接口
 int LinkListForeach(LinkList *pList)
 {
-
+    
 }
