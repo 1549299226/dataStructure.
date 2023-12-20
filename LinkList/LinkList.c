@@ -3,9 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+//静态函数只在本文件使用
+//静态函数前置声明
+static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos);
+
 
 enum STATUS_CODE
 {
+    NOT_FIND = -1,
     ON_SUCCESS,
     NULL_PTR,
     MALLOC_ERROR,
@@ -152,6 +157,14 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
 
 
 #endif
+    int flag = 0;
+    //需要修改尾指针
+    if (pos == pList->len)
+    {
+        flag = 1;
+    }
+    LinkNode * needDelNode = NULL;
+    //*pPos = NOT_FIND; 
     while (--pos)
     {
         //向后移动位置
@@ -160,10 +173,15 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
 
     //跳出循环找到的结点
 
-    LinkNode * needDelNode = travelNode->next;
+    needDelNode = travelNode->next;
     travelNode->next = needDelNode->next;
     //travelNode->next = travelNode->next->next;
 
+    if (flag)
+    {
+        //调整尾指针
+        pList->tail = travelNode;
+    }
     //释放内存
     if(needDelNode != NULL)
     {
@@ -176,10 +194,52 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
     
 }
 
+//根据指定的元素得到在链表中所在的位置
+static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos)
+{   
+    //静态函数只给本源文件函数使用不需要判断合法性
+    int ret;
+#if 1
+    LinkNode *travelNode = pList->head->next;
+    int pos = 1;
+#else
+    LinkNode *travelNode = pList->head;
+    int pos = 0;
+#endif
+    
+    while (travelNode != NULL)
+    {
+        if (travelNode->data == val)
+        {
+            *pPos = pos;
+            return pos;
+        }
+        travelNode = travelNode->next;
+        pos++;
+    }
+    
+    *pPos = NOT_FIND;
+    return NOT_FIND;
+}
+
 //删除指定元素
 int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
 {
+    int ret = 0;
+    //元素在链表中的位置
+    int pos = 0;
 
+    //链表的长度
+    int size = 0;
+    while (LinkListGetLength(pList, &size) && pos != NOT_FIND)
+    {
+        //LinkListDelAppointPos(pList, LinkListAccordAppintValGetPos(pList, val, &pos));
+        LinkListAccordAppintValGetPos(pList, val, &pos);
+        LinkListDelAppointPos(pList, pos);
+    }
+    
+    
+    return ret;
 }
 
 //获取链表长度
