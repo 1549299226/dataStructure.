@@ -16,6 +16,7 @@ enum STATUS_CODE
     MALLOC_ERROR,
     INVALID_ACCESS,
 };
+
 //链表初始化
 int LinkListInit(LinkList** pList)
 {
