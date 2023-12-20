@@ -153,5 +153,28 @@ int LinkListDestroy(LinkList *pList)
 //链表遍历接口
 int LinkListForeach(LinkList *pList)
 {
+    int ret = 0;
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+
+#if 0
+    LinkNode * travelNode = pList->head;
+    while (travelNode->next != NULL)
+    {
+        travelNode = travelNode->next;
+        printf("travelNode->data:%d\n", travelNode->data);
+    }
+#else
+    LinkNode * travelNode = pList->head->next;
+    while (travelNode != NULL)
+    {
+        printf("travelNode->data:%d\n", travelNode->data);
+        travelNode = travelNode->next;
+    }
     
+#endif
+   
+    return ret;
 }
