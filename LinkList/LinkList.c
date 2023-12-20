@@ -43,6 +43,7 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
 {
 
 }
+
 //删除指定元素
 int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
 {
@@ -57,3 +58,12 @@ int LinkListGetLength(LinkList *pList, int *pSize)
 
 //链表的销毁
 int LinkListDestroy(LinkList *pList)
+{
+
+}
+
+//链表遍历接口
+int LinkListForeach(LinkList *pList)
+{
+
+}
