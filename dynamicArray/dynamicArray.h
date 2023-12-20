@@ -2,7 +2,7 @@
 #define __DYNAMIC_ARRAY_H_
 
 //避免重复包含头文件
-typedef int ELEMENTTYPE;
+typedef void * ELEMENTTYPE ;
 
 typedef struct dynamicArray
 {

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "dynamicArray.h"
-
+#include <string.h>
 
 /*
     静态数组 
@@ -8,12 +8,12 @@
         2、可能会有浪费的现象
 */
 #define BUFFER_SIZE 20
-#define DEFAULT_SIZE 5
+#define DEFAULT_NUM 3
 
 typedef static stuInfo
 {
-    int age,
-    char sex
+    int age;
+    char sex;
 }stuInfo;
 
 int main()
@@ -21,7 +21,7 @@ int main()
     dynamicArray array;
     /* 初始化 */
     dynamicArrayInit(&array, BUFFER_SIZE);
-
+#if 0
     {
         /* 插入数据 */
         dynamicArrayInsertData(&array, 3);
@@ -79,9 +79,45 @@ int main()
     stu1.age = 30;
     stu1.sex = 'm';
 
-    dynamicArrayInsertData(&array,stu1);
-    dynamicArrayInsertData(&array,stu2);
-    dynamicArrayInsertData(&array,stu3);
+    stuInfo buffer[DEFAULT_NUM] = {stu1,stu2,stu3};
 
-    return 0;
+    for (int idx = 0; idx < DEFAULT_NUM ; idx++)
+    {
+        dynamicArrayInsertData(&array,(void *)&buffer[idx]);
+    }
+ 
+    int size = 0;
+    dynamicArrayGetSize(&array, &size);
+    printf("size:%d\n",size);
+
+    stuInfo *info;
+    //memset(&info, 0, sizeof(info));
+    for (int idx = 0; idx < DEFAULT_NUM ; idx++)
+    {
+        dynamicArrayGetAppointPosval(&array, idx,(void *)&info);
+        printf("info.age:%d\tinfo.sex:%c\n",info->age,info->sex);
+    }
+#endif    
+    
+    int buffer[DEFAULT_NUM] = {1,2,3};
+    for (int idx = 0; idx < DEFAULT_NUM; idx++)
+    {
+        dynamicArrayInsertData(&array, (void *)&buffer[idx]);
+
+    }
+    
+    int size = 0;
+    dynamicArrayGetSize(&array, &size);
+    printf("size:%d\n",size);
+
+    int *val = NULL;
+    for (int idx = 0; idx < DEFAULT_NUM; idx++)
+    {
+        dynamicArrayGetAppointPosval(&array, idx, (void *)&val);
+        printf("val:%d\n",*val);
+    }
+
+    
+    return 0;
+
 }
