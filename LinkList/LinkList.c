@@ -5,7 +5,7 @@
 
 //静态函数只在本文件使用
 //静态函数前置声明
-static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos);
+static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos, int (*compareFunc)(ELEMENTTYPE, ELEMENTTYPE));
 
 
 enum STATUS_CODE
@@ -29,7 +29,7 @@ int LinkListInit(LinkList** pList)
     //清空脏数据
     memset(list, 0, sizeof(LinkList) * 1);
 
-    list->head = (LinkList *)malloc(sizeof(LinkList) * 1);
+    list->head = (LinkNode *)malloc(sizeof(LinkNode) * 1);
     if (list->head == NULL)
     {
         return MALLOC_ERROR;
@@ -65,7 +65,7 @@ int LinkListTailInsert(LinkList *pList, ELEMENTTYPE val)
 
 }
 
-//任意位置插入
+//指定位置插入
 int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTYPE val)
 {
     int ret = 0;
@@ -80,7 +80,7 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTYPE val)
     }
     
     //封装结点
-    LinkNode * NewNode = (LinkList *)malloc(sizeof(LinkList * 1));
+    LinkNode * NewNode = (LinkNode *)malloc(sizeof(LinkNode) * 1);
     if (NewNode == NULL)
     {
         return MALLOC_ERROR;
@@ -103,7 +103,7 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTYPE val)
     if (pos == pList->len)
     {
         travelNode = pList->tail;
-        flag = 1
+        flag = 1;
     }
     else
     {
@@ -196,7 +196,7 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
 }
 
 //根据指定的元素得到在链表中所在的位置
-static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos)
+static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* pPos, int (*compareFunc)(ELEMENTTYPE, ELEMENTTYPE))
 {   
     //静态函数只给本源文件函数使用不需要判断合法性
     int ret;
@@ -207,14 +207,26 @@ static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* 
     LinkNode *travelNode = pList->head;
     int pos = 0;
 #endif
-    
+    int cmp = 0;
     while (travelNode != NULL)
     {
+        #if 0
         if (travelNode->data == val)
         {
             *pPos = pos;
             return pos;
         }
+
+    #else
+    cmp = compareFunc(val, travelNode->data);
+
+    if (cmp == 0)
+    {
+        *pPos = pos;
+        return pos;
+    }
+
+    #endif
         travelNode = travelNode->next;
         pos++;
     }
@@ -224,7 +236,7 @@ static int LinkListAccordAppintValGetPos(LinkList *pList, ELEMENTTYPE val, int* 
 }
 
 //删除指定元素
-int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
+int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE, ELEMENTTYPE))
 {
     int ret = 0;
     //元素在链表中的位置
@@ -264,12 +276,12 @@ int LinkListGetLength(LinkList *pList, int *pSize)
 //链表的销毁
 int LinkListDestroy(LinkList *pList)
 {
-    int ret 
+    int ret = 0; 
     //使用头删
     int size = 0;
     while (LinkListGetLength(pList,&size))
     {
-        LinkListDelHead(pList;)
+        LinkListDelHead(pList);
     }
 
     if (pList->head != NULL)
@@ -284,7 +296,7 @@ int LinkListDestroy(LinkList *pList)
 }
 
 //链表遍历接口
-int LinkListForeach(LinkList *pList)
+int LinkListForeach(LinkList *pList, int (*printFunc)(ELEMENTTYPE))
 {
     int ret = 0;
     if (pList == NULL)
@@ -305,8 +317,14 @@ int LinkListForeach(LinkList *pList)
     LinkNode * travelNode = pList->head->next;
     while (travelNode != NULL)
     {
+        #if 0
         printf("travelNode->data:%d\n", travelNode->data);
+        #else
+        //包装器 钩子 回调函数
+        printFunc(travelNode->data);
+        #endif
         travelNode = travelNode->next;
+
     }
     
 #endif
