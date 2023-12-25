@@ -19,7 +19,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree *pBstree, ELEME
 
 
 //二叉搜索树的初始化
-int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
+int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2), int (*printFunc)(ELEMENTTYPE val))
 {
     int ret = 0;
     binarySearchTree *bstree = (binarySearchTree *)malloc(sizeof(binarySearchTree) * 1);
@@ -32,7 +32,10 @@ int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTT
         bstree->root = NULL;
         bstree->size = 0;
 
+        //钩子函数在这边赋值
         bstree->compareFunc = compareFunc;
+        //钩子函数包装器 自定义打印
+        bstree->printFunc = printFunc;
     }
 
     #if 0
@@ -265,7 +268,11 @@ int binarySearchTreeLevelOrderTrave(binarySearchTree *pBstree)
     while (!DoubleLinkListQueueIsEmpty(pQueue))
     {
         dynamicArrayStackTop(pQueue, (void **)nodeVal);
+        #if 0
         printf("data:%d\n",nodeVal->data);
+        #else
+        pBstree->printFunc(nodeVal->data);
+        #endif
         DoubleLinkListQueuePop(pQueue);
 
         //左子树入队
@@ -283,6 +290,6 @@ int binarySearchTreeLevelOrderTrave(binarySearchTree *pBstree)
     
     //释放队列
     DoubleLinkListQueueDestroy(pQueue);
-    
+
     return ret;
 }
