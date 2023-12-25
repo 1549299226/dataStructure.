@@ -1,4 +1,5 @@
 #include "binarySearchTree.h"
+#include "doubleLinkListQueue.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -83,6 +84,7 @@ static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2)
 }
 #endif
 
+//新建结点
 static BSTreeNode createBSTreeNewNode(ELEMENTTYPE val,  BSTreeNode * parent)
 {
     BSTreeNode * newBstNode = (BSTreeNode*)malloc(sizeof(BSTreeNode) * 1);
@@ -214,7 +216,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree *pBstree, ELEME
 //二叉搜索树是否包含指定元素
 int binarySearchTreeIsContainAppointVal(binarySearchTree *pBstree, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
 {
-
+    return baseAppointValGetBSTreeNode(pBstree, val) == NULL ? 0 : 1;
 }
 
 
@@ -222,6 +224,10 @@ int binarySearchTreeIsContainAppointVal(binarySearchTree *pBstree, ELEMENTTYPE v
 int binarySearchTreepreOrderTrave()
 {
     int ret = 0;
+
+
+
+
 
     return ret;
 }
@@ -243,9 +249,40 @@ int binarySearchTreePostOrderTrave()
 }
 
 //层序
-int binarySearchTreeLevelOrderTrave()
+int binarySearchTreeLevelOrderTrave(binarySearchTree *pBstree)
 {
     int ret = 0;
 
+    //初始化队列
+    DoubleLinkListQueue *pQueue = NULL;
+    DoubleLinkListQueueInit(&pQueue);
+
+    //入队
+    DoubleLinkListQueuePush(pQueue, pBstree->root);
+
+    //判断队列是否为空
+    BSTreeNode *nodeVal = NULL;
+    while (!DoubleLinkListQueueIsEmpty(pQueue))
+    {
+        dynamicArrayStackTop(pQueue, (void **)nodeVal);
+        printf("data:%d\n",nodeVal->data);
+        DoubleLinkListQueuePop(pQueue);
+
+        //左子树入队
+        if (nodeVal->left != NULL)
+        {
+            DoubleLinkListQueuePush(pQueue, nodeVal->left);
+
+        }
+        //右子树入队
+        if (nodeVal->right != NULL)
+        {
+            DoubleLinkListQueuePush(pQueue, nodeVal->right);
+        }
+    }
+    
+    //释放队列
+    DoubleLinkListQueueDestroy(pQueue);
+    
     return ret;
 }
