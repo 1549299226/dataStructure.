@@ -68,7 +68,7 @@ static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2)
     #else
 
     return val1 - val2;
-    
+
     #endif
 }
 //二叉搜索树的插入
@@ -127,12 +127,12 @@ int binarySearchTreeInsert(binarySearchTree *pBstree, ELEMENTTYPE val)
     //挂在左子树
     if (cmp < 0)
     {
-        parentNode->left =  (val的结点);
+        parentNode->left =  newBstNode;
     }
     else
     {
         //挂在右子树
-        parentNode->right = (val的结点);
+        parentNode->right = newBstNode;
     }
         
     newBstNode->parent = parentNode;
