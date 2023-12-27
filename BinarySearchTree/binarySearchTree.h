@@ -2,7 +2,8 @@
 #ifndef __BINARY_SEARCH_TREE_H_
 #define __BINARY_SEARCH_TREE_H_
 
-#define ELEMENTTYPE int
+#include "doubleLinkListQueue.h"
+
 
 typedef struct BSTreeNode
 {
@@ -42,16 +43,26 @@ int binarySearchTreeIsContainAppointVal(binarySearchTree *pBstree, ELEMENTTYPE v
 
 
 //二叉搜索树的前序遍历
-int binarySearchTreepreOrderTrave();
+int binarySearchTreepreOrderTrave(binarySearchTree *pBstree);
 
 //中序
-int binarySearchTreeInOrderTrave();
+int binarySearchTreeInOrderTrave(binarySearchTree *pBstree);
+
 
 //后序
-int binarySearchTreePostOrderTrave();
+int binarySearchTreePostOrderTrave(binarySearchTree *pBstree);
 
 //层序
-int binarySearchTreeLevelOrderTrave();
+int binarySearchTreeLevelOrderTrave(binarySearchTree *pBstree);
 
+//获取二叉搜索树的高度
+int binarySearchTreeGetHeight(binarySearchTree *pBstree,int *pHeight);
+
+//二叉搜索树的删除
+int binarySearchTreeDelete(binarySearchTree *pBstree, ELEMENTTYPE val);
+
+
+//层序
+int binarySearchTreeLevelOrderTrave(binarySearchTree *pBstree);
 
 #endif //__BINARY_SEARCH_TREE_H_
