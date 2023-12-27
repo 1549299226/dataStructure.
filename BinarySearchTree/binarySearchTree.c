@@ -185,7 +185,7 @@ static BSTreeNode *bstreeNodepreDecessor(BSTreeNode *node)
         return travelNode;
     }
     //程序执行到这里一定没有左子树，需要向父结点找
-    while (node->parent != NULL && node == node->parent->left)
+    while (node->parent != NULL && node == node->parent->right)
     {
         node = node->parent;
     }
@@ -197,7 +197,25 @@ static BSTreeNode *bstreeNodepreDecessor(BSTreeNode *node)
 //获取当前结点的后继结点
 static BSTreeNode *bstreeNodeSuccessor(BSTreeNode *node)
 {
+    if (node->right != NULL)
+    {
+        //后继结点是右子树的左子树的左子树的左子树。。。
+        BSTreeNode *travelNode = node->right;
+        while (travelNode->left != NULL)
+        {
+            travelNode = travelNode->left;
+        }
+        return travelNode;
+    }
+    //程序执行到此，说明没有右子树，要想父节点走
+    while (travelNode->parent != NULL && travelNode->parent->left)
+    {
+        node = node->parent;
+    }
 
+    return node->parent;
+    
+    
 }
 
 //二叉搜索树的插入
