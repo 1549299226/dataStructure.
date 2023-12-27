@@ -491,3 +491,53 @@ int binarySearchTreeDelete(binarySearchTree *pBstree, ELEMENTTYPE val)
 
     return ret;
 }
+
+//二叉搜索树的销毁
+int binarySearchTreeDestroy(binarySearchTree *pBstree)
+{
+    if (pBstree == NULL)
+    {
+        return NULL_PTR;
+    }
+
+
+    int ret = 0;
+
+    DoubleLinkListQueue * pQueue = NULL;
+    DoubleLinkListQueueInit(&pQueue);
+
+    BSTreeNode *traveNode = NULL;
+    while (DoubleLinkListQueueIsEmpty(pQueue))
+    {
+        DoubleLinkListQueueTop(pQueue, (void**)&traveNode);
+        DoubleLinkListQueuePop(pQueue);
+    
+
+        if (traveNode->left != NULL)
+        {
+            DoubleLinkListQueuePush(pQueue, traveNode->left);
+        }
+    
+        if (traveNode->right != NULL)
+        {
+            DoubleLinkListQueuePush(pQueue, traveNode->right);
+        }
+    
+        if (traveNode)
+        {
+            free(traveNode);
+            traveNode = NULL;
+        }
+    }
+
+    DoubleLinkListQueueDestroy(pQueue);
+    
+    if (pBstree)
+    {
+        free(pBstree);
+        pBstree = NULL;
+    }
+    
+    return ret;
+
+}
