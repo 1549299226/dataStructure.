@@ -17,6 +17,10 @@ enum STATUS_CODE
 
 //static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2);
 
+//获取AVL结点较高的子结点
+static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode *node);
+
+
 static int AVLTreeNodeIsBalancde(AVLTreeNode *node);
 
 //AVL树结点调平衡
@@ -263,10 +267,71 @@ static int AVLTreeNodeUpdateHeight(AVLTreeNode *node)
     return ret;
 }
 
+//获取AVL结点较高的子结点
+static AVLTreeNode *  AVLTreeNodeGetChildTaller(AVLTreeNode *node)
+{
+    //左子树高度
+    int leftHeight = node->left == NULL ? 0 : node->left->height;
+    //右子树高度
+    int rightHeight = node->right == NULL ? 0 : node->right->height;
+
+    if (leftHeight > rightHeight)
+    {
+        return node->left;
+    }
+    else if (leftHeight < rightHeight)
+    {
+        return node->right;
+    }
+    else
+    {
+        //leftHeight == rightHeight
+        if (node->parent != NULL && node == node->parent->left)
+        {
+            return node->left;
+        }
+        else
+        {
+            return node->right;
+        }
+        
+    }
+    
+    
+
+}
 //AVL树结点调平衡
+//node 是最低的不平衡结点
 static int AVLTreeNodeAdjustBalance(balanceBinarySearchTree *pBstree, AVLTreeNode * node)
 {
-
+    //LL LR RR RL
+    AVLTreeNode * parent = AVLTreeNodeGetChildTaller(node);
+    AVLTreeNode * child = AVLTreeNodeGetChildTaller(parent);
+    if (parent == node->left)
+    {
+        if (child == parent->left)
+        {
+            //LL
+        }
+        else
+        {
+            //LR
+        }
+        
+    }
+    else
+    {
+        if (child == parent->left)
+        {
+            //RL
+        }
+        else
+        {
+            //RR
+        }
+        
+    }
+    
 }
 //添加节点之后的操作
 //新添加的结点一定是叶子结点
