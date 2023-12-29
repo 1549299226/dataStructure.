@@ -630,14 +630,21 @@ int balanceBinarySearchTreeGetHeight(balanceBinarySearchTree *pBstree,int *pHeig
     {
         return NULL_PTR;
     }
+    int ret = 0;
+    #if 1
+    if (pBstree->size == 0)
+    {
+        return 0;
+    }
+    *pHeight = pBstree->root->height;
+
+    return pBstree->root->height;
+    #else
     
     if (pBstree->size == 0)
     {
         return 0;
     }
-    
-    int ret = 0;
-
     DoubleLinkListQueue * pQueue = NULL;
     DoubleLinkListQueueInit(&pQueue);
 
@@ -676,7 +683,7 @@ int balanceBinarySearchTreeGetHeight(balanceBinarySearchTree *pBstree,int *pHeig
 
     DoubleLinkListQueueDestroy(pQueue);
     
-
+#endif
     return ret;
 }
 
